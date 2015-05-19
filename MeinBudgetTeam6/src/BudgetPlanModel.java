@@ -17,10 +17,10 @@ import com.opencsv.CSVReader;
  * 
  */
 public class BudgetPlanModel {
-	List<Posten> ausgaben;
+	List<Posten> gesamt;
 
 	public BudgetPlanModel() {
-		this.ausgaben = new ArrayList<Posten>();
+		this.gesamt = new ArrayList<Posten>();
 		try {
 			// Zeilenweises Einlesen der Daten
 			CSVReader reader = new CSVReader(new FileReader("data/budget.csv"));
@@ -30,7 +30,8 @@ public class BudgetPlanModel {
 				Date datum = df.parse(nextLine[0]);
 				String bezeichnung = nextLine[1];
 				double betrag = Double.parseDouble(nextLine[2]);
-				ausgaben.add(new Posten(datum, bezeichnung, betrag));
+				String kategorie = nextLine[3];
+				gesamt.add(new Posten(datum, bezeichnung, betrag, kategorie));
 			}
 			reader.close();
 
