@@ -18,6 +18,8 @@ public class Posten {
 	private double betrag;
 	
 	private String kategorie;
+	
+	private int periodkey;
 
 	/**
 	 * Konstruktor
@@ -29,11 +31,12 @@ public class Posten {
 	 * @param betrag
 	 *            Hoehe des Postens
 	 */
-	public Posten(Date datum, String bezeichnung, double betrag, String kategorie) {
+	public Posten(Date datum, String bezeichnung, double betrag, String kategorie, int periodkey) {
 		this.bezeichnung = bezeichnung;
 		this.datum = datum;
 		this.betrag = betrag;
 		this.kategorie = kategorie;
+		this.periodkey = periodkey;
 	}
 
 	public Date getDatum() {
@@ -51,4 +54,19 @@ public class Posten {
 	public String getKategorie() {
 		return kategorie;
 	}
+	
+	public int getperiodkey() {
+		return periodkey;
+	}
+	
+	public void printPosten(){
+		System.out.println("Datum "+datum);
+		System.out.println("Bezeichnung "+bezeichnung);
+		System.out.println("Betrag "+ betrag);
+		System.out.println("Kategorie "+ kategorie);
+		System.out.println("PeriodKey "+periodkey);
+		
+	}
+	
+	
 }

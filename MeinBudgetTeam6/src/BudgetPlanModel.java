@@ -20,6 +20,10 @@ public class BudgetPlanModel {
 	List<Posten> gesamt;
 
 	public BudgetPlanModel() {
+		initialize();
+	}
+	
+	public void initialize(){
 		this.gesamt = new ArrayList<Posten>();
 		try {
 			// Zeilenweises Einlesen der Daten
@@ -31,7 +35,8 @@ public class BudgetPlanModel {
 				String bezeichnung = nextLine[1];
 				double betrag = Double.parseDouble(nextLine[2]);
 				String kategorie = nextLine[3];
-				gesamt.add(new Posten(datum, bezeichnung, betrag, kategorie));
+				int periodkey = Integer.parseInt(nextLine[4]);
+				gesamt.add(new Posten(datum, bezeichnung, betrag, kategorie, periodkey));
 			}
 			reader.close();
 

@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable.*;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -68,13 +70,10 @@ public class BudgetPlanGUI extends JFrame {
 	protected void initWindow() {
 
 		// Tabelle mit Uebersicht der Ausgaben
-		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie" };
+		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie", "Periodisch anfallend" };
 		dtm = new DefaultTableModel(setupTable(),line);
 		table = new JTable(dtm);
 		
-		
-		//table = new JTable(setupTable(), new Object[] { "Datum", "Bezeichnung",
-		//		"Betrag", "Kategorie" });
 		scrollpane = new JScrollPane(table);
 
 		// Kreisdiagramm
@@ -89,7 +88,7 @@ public class BudgetPlanGUI extends JFrame {
 		ChartPanel panel = new ChartPanel(pie);
 
 		// Button
-		button = new JButton("TestButton!");
+		button = new JButton("Refresh!");
 
 
 		// Elemente dem Fenster hinzufuegen:
@@ -103,7 +102,7 @@ public class BudgetPlanGUI extends JFrame {
 	
 	
 	public Object[][] setupTable(){
-		Object[][] data = new Object[budget.gesamt.size()][4];
+		Object[][] data = new Object[budget.gesamt.size()][5];
 		int i = 0;
 		for (Posten p : budget.gesamt) {
 			data[i][0] = new SimpleDateFormat("dd/MM/yyyy")
@@ -111,6 +110,7 @@ public class BudgetPlanGUI extends JFrame {
 			data[i][1] = p.getBezeichnung();
 			data[i][2] = String.format("%.2f", p.getBetrag());
 			data[i][3] = p.getKategorie();
+			data[i][4] = p.getperiodkey();
 			i++;
 		}
 		return data;
@@ -123,9 +123,15 @@ public class BudgetPlanGUI extends JFrame {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(BudgetPlanGUI.this,
-						"Sie sollten Ihre Finanzplanung ueberdenken!",
-						"Hinweis", JOptionPane.PLAIN_MESSAGE);
+					//JOptionPane.showMessageDialog(BudgetPlanGUI.this,
+					//	"Sie sollten Ihre Finanzplanung ueberdenken!",
+					//	"Hinweis", JOptionPane.PLAIN_MESSAGE);
+					
+					budget.initialize();
+					dtm = new DefaultTableModel(setupTable(),line);
+					table.setModel(dtm);
+	
+				
 			}
 
 		});
