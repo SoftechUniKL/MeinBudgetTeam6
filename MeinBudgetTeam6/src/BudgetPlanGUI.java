@@ -21,7 +21,7 @@ import org.jfree.data.general.DefaultPieDataset;
 public class BudgetPlanGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	/**
-	 * Tabelle mit Uebersicht der Ausgaben
+	 * Tabelle mit Uebersicht der Ausgaben 
 	 */
 
 	private DefaultTableModel dtmIn, dtmOut;
