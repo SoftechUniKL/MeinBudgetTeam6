@@ -71,7 +71,7 @@ public class DatenVerwaltung extends Menu {
 
 		// Button
 		JButton btnDelete = new JButton("Löschen!");
-		JButton btnAbbruch = new JButton ("Abbruch!");
+		JButton btnAbbruch = new JButton ("Zurück ins Hauptmenü!");
 		btnDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
