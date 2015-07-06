@@ -3,12 +3,12 @@
  * 
  */
 
+
+
 public class BudgetPlan {
 	public static void main(String[] args) {
-		BudgetPlanModel budget = new BudgetPlanModel(); // Modell
-		new BudgetPlanGUI(budget); // View und Controller
 		
-		Eingabe window = new Eingabe();
+		Hauptmenu m1 = new Hauptmenu();
 
 	}
 

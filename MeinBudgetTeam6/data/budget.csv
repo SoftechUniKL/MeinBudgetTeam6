@@ -1,5 +1,8 @@
-01.01.2002,Gehalt,+2000,Einkünfte,30
-01.01.2002,Miete,+200,Einkünfte,30
-01.01.2002,KFZ-Steuer,-383,KFZ,180
-01.01.2002,Versicherungen,-500,Wohngebaeude,365
-01.01.2002,Einkauf bei xyz,-100,Lebensmittel,0
+01.01.2002,Gehalt,2000.0,Einkünfte,30
+01.01.2002,Miete,200.0,Einkünfte,30
+01.01.2002,KFZ-Steuer,-383.0,KFZ,180
+01.01.2002,Versicherungen,-500.0,Wohngebaeude,365
+01.01.2002,Einkauf bei xyz,-100.0,Lebensmittel,0
+29.05.2015,Geld,200.0,-,0
+28.05.2015,Geldmehr,2000.0,-,0
+28.05.2015,Geldmehr2,2000.0,-,0

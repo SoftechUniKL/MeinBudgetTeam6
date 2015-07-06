@@ -1,14 +1,18 @@
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVParser;
 
 /**
  * Datenmodell des Budgetplaners
@@ -18,7 +22,9 @@ import com.opencsv.CSVReader;
  */
 public class BudgetPlanModel {
 	List<Posten> gesamt;
-
+	
+	private static final String sep = System.lineSeparator();
+	
 	public BudgetPlanModel() {
 		initialize();
 	}
@@ -54,4 +60,51 @@ public class BudgetPlanModel {
 			System.exit(1);
 		}
 	}
+	
+	 public static void clearCsv() {
+		 try{
+			 BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", true)); 
+	         bw.flush();
+	         bw.close(); 
+		 }
+		 catch (Exception e){ // noch nichts
+	     }
+	}
+	
+	public void remove(int n){
+		clearCsv();
+		gesamt.remove(n);
+			
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
+            	
+        		for (Posten p : gesamt) {
+        			String d = dateToString(p.getDatum());
+        			String b = p.getBezeichnung();
+        			Double be = p.getBetrag();
+        			String k = p.getKategorie();
+        			int pk = p.getperiodkey();
+    			
+        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
+    				
+        			bw.write(save); //schreiben
+        		}
+                bw.flush(); // Puffer von BW leeren
+                bw.close();//BufferWriter schliessen
+        }
+        catch (Exception e){ // noch nichts
+        }
+		}
+
+	
+
+	private String dateToString(Date d){
+		String format = "dd.MM.yyyy";
+		Date date = d;
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		String stringDate = sdf.format(date );
+		return stringDate;
+	}
 }
+
+	
