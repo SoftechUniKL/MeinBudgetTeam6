@@ -68,5 +68,11 @@ public class Posten {
 		
 	}
 	
+	public void setBetrag(double AvgBetrag){
+		this.betrag = AvgBetrag;
+	}
 	
+	public void setKategorie(String Kategorie){
+		this.kategorie = Kategorie;
+	}
 }

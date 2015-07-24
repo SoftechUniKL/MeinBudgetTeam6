@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,6 +26,8 @@ public class Hauptmenu extends Menu {
 	private JButton btnEingabe;
 	private JButton btnGrafik;
 	private JButton btnDV;
+	private JButton btnProg;
+	private JButton btnSpar;
 	private JButton btnExit;
 
 	public Hauptmenu(){
@@ -80,6 +83,29 @@ public class Hauptmenu extends Menu {
 		});
 		addComp(pan,  gb,			btnDV,				1,				3,	2,	1);
 		
+		//PrognoseFunktion
+		btnProg = new JButton("Prognosefunktion");
+		btnProg.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				BudgetPlanModel budget = new BudgetPlanModel(); // Modell
+				Prognosefunktion Darstellung = new Prognosefunktion(budget); // View und Controller
+				hm.setVisible(false); //Hauptmenü unsichtbar
+				
+			}
+		});
+		addComp(pan,  gb,			btnProg,				1,				4,	2,	1);
+		
+		//SparFunktion
+		btnSpar = new JButton("Sparfunktion");
+		btnSpar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.out.println("Spar");
+				hm.setVisible(false); //Hauptmenü unsichtbar
+				Sparfunktion window = new Sparfunktion(hm);
+			}
+		});
+		addComp(pan,  gb,			btnSpar,				1,				5,	2,	1);
+
 		JButton btnExit = new JButton("Beenden");
 		btnExit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
