@@ -189,6 +189,20 @@ public class BudgetPlanModel {
 		}
 	}
 	
+	public List<Posten> repeatx (int repeat, Posten p){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(p.getDatum());
+		int month = cal.get(Calendar.MONTH)+1; // Januar = 0
+		
+		List<Posten> periodic = new ArrayList<Posten>();
+		
+		for (int i = month; i<12; i++){
+			cal.add(Calendar.MONTH,1);
+			Date datum = cal.getTime();
+			periodic.add(new Posten(datum, p.getBezeichnung(), p.getBetrag(), p.getKategorie(), 0));
+		}
+		return periodic;
+	}
 	
 	
 

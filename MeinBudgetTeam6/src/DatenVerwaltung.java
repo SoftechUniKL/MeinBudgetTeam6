@@ -60,7 +60,8 @@ public class DatenVerwaltung extends Menu {
 		table = new JTable(dtm);
 		
 		scrollpane = new JScrollPane(table);
-
+		
+		
 		// Button
 		JButton btnDelete = new JButton("Löschen!");
 		JButton btnAbbruch = new JButton ("Zurück ins Hauptmenü!");
