@@ -47,8 +47,6 @@ public class Hauptmenu extends Menu {
 	
 	public void setupHM(){
 		//Labels
-		JLabel hl = headline("Hauptmenü");
-		hm.add(hl, BorderLayout.NORTH);
 				
 		//Buttons
 		schalt();
@@ -104,7 +102,7 @@ public class Hauptmenu extends Menu {
 		btnProg.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				BudgetPlanModel budget = new BudgetPlanModel(); // Modell
-				Prognosefunktion Darstellung = new Prognosefunktion(budget); // View und Controller
+				Prognose Darstellung = new Prognose(); // View und Controller
 				hm.setVisible(false); //Hauptmenü unsichtbar
 				
 			}

@@ -29,6 +29,42 @@ import org.jfree.data.general.DefaultPieDataset;
 
 public class Prognosefunktion extends JFrame {
 
+	class Vergleich{
+		String kategorie;
+		double betrag;
+		double dw;
+		int anzahl;
+		
+		Vergleich(String kategorie, double betrag, int anzahl, double dw){
+			this.kategorie = kategorie;
+			this.betrag = betrag;
+			this.anzahl = anzahl;
+			this.dw = dw;
+		}
+		
+		private void setBetrag(double add){
+			this.betrag+=add;
+		}
+		
+		private void incAnzahl(){
+			anzahl++;
+		}
+		
+		private void bildeDw(){
+			if(anzahl == 0){dw=0;} else{
+			dw = betrag / anzahl;
+			}
+		}
+		
+		private double getMw(){
+			return dw;
+		}
+		
+		private String getKat(){
+			return kategorie;
+		}
+		
+	}
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -40,51 +76,22 @@ public class Prognosefunktion extends JFrame {
 	private DefaultTableModel dtmIn, dtmOut; // Table
 	private DefaultPieDataset pd, pd2; // Piechart
 	private DefaultCategoryDataset dataset, dataset2; // Balken
-	private Object[] line;
+	private Object[] line,line2;
 	private JTable tableIn, tableOut;
 	private JFreeChart balken, balken2, pie, pie2;
-	/**
-	 * 
-	 * Scrollelemente, das die Tabelle umfasst
-	 * 
-	 */
 
 	private JScrollPane scrollpaneIn, scrollpaneOut;
 	ChartPanel panel, panel2, panel3, panel4;
 
-	/**
-	 * 
-	 * Schaltflaeche, die beim Klicken einen Dialog anzeigt
-	 * 
-	 */
+
 
 	private JButton buttonAll, buttonMonth, buttonYear, buttonBalken, buttonClose;
 
-	/**
-	 * 
-	 * Modell der Daten
-	 * 
-	 */
 
 	private BudgetPlanModel budget;
 	private List<Posten> sortedListIn, sortedListOut,categoryListIn, categoryListOut,categoryListIn2,categoryListOut2;
 
-	/**
-	 * 
-	 * Konstruktor fuer die GUI.
-	 * 
-	 * 
-	 * 
-	 * Hier wird das Hauptfenster initialisiert und aktiviert.
-	 * 
-	 * 
-	 * 
-	 * @param budget
-	 * 
-	 *            Modell der Daten
-	 * 
-	 */
-
+	
 	public Prognosefunktion(BudgetPlanModel budget) {
 		super("BudgetPlan");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,10 +111,11 @@ public class Prognosefunktion extends JFrame {
 		sortList();
 		// Tabelle mit Uebersicht der Ausgaben
 		line = new Object[] { "Datum", "Bezeichnung", "Betrag", "Kategorie" };
-		dtmIn = new DefaultTableModel(setupTable(true), line);
-		dtmOut = new DefaultTableModel(setupTable(false), line);
+		line2 = new Object[] { "Kategorie", "Betrag"};
+		dtmIn = new DefaultTableModel(setupTable1(), line2);
+		//dtmOut = new DefaultTableModel(setupTable(false), line);
 		tableIn = new JTable(dtmIn);
-		tableOut = new JTable(dtmOut);
+		//tableOut = new JTable(dtmOut);
 
 		// inits sortedList with copy of gesamt
 
@@ -208,6 +216,19 @@ public class Prognosefunktion extends JFrame {
 	}
 
 
+	public Object[][] setupTable1() {
+		List<Vergleich> listToUse=mwBilden();
+		
+		int i = 0;
+		Object[][] data = new Object[listToUse.size()][2];
+		for (Vergleich v : listToUse) {
+			data[i][0] =v.getKat();
+			data[i][1] = v.getMw();
+			i++;
+		}
+		return data;
+	}
+	
 	public Object[][] setupTable(boolean einkommen) {
 		List<Posten> listToUse;
 		if (einkommen)
@@ -227,7 +248,63 @@ public class Prognosefunktion extends JFrame {
 		return data;
 	}
 
-
+	
+	public List<Vergleich> mwBilden(){
+	
+		categoryListIn = new ArrayList<Posten>();
+		categoryListOut = new ArrayList<Posten>();
+	
+		Vergleich bindestrich = new Vergleich("-",0.0,0,0.0);
+		Vergleich lebensmittel = new Vergleich("Lebensmittel",0.0,0,0.0);
+		Vergleich haushalt = new Vergleich("Haushalt",0.0,0,0.0);
+		Vergleich KFZ = new Vergleich("KFZ",0.0,0,0.0);
+		
+		for (Posten p : budget.gesamt) { 
+			if (p.getBetrag() >= 0){
+				categoryListIn.add(p);
+			}
+			else
+				categoryListOut.add(p);
+		}
+		
+		for (Posten p : categoryListIn){
+			switch (p.getKategorie()){
+			case"-":
+				bindestrich.setBetrag(p.getBetrag());
+				bindestrich.incAnzahl();
+				break;
+			case"Lebensmittel":
+				lebensmittel.setBetrag(p.getBetrag());
+				lebensmittel.incAnzahl();
+				break;
+			case"Haushalt":
+				haushalt.setBetrag(p.getBetrag());
+				haushalt.incAnzahl();
+				break;
+			case"KFZ":
+				KFZ.setBetrag(p.getBetrag());
+				KFZ.incAnzahl();
+				break;
+				
+				
+			}
+		}
+		
+		bindestrich.bildeDw();
+		lebensmittel.bildeDw();
+		haushalt.bildeDw();
+		KFZ.bildeDw();
+		
+		List<Vergleich> uebersicht = new ArrayList<Vergleich>();
+		uebersicht.add(bindestrich);
+		uebersicht.add(lebensmittel);
+		uebersicht.add(haushalt);
+		uebersicht.add(KFZ);
+		
+		return uebersicht;
+		
+	}
+	
 	public void sortList() {
 		double MittelwertBetrag=0;
 		double SummeBetrag=0;
