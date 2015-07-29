@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Calendar;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVParser;
@@ -26,6 +27,10 @@ public class BudgetPlanModel {
 	private static final String sep = System.lineSeparator();
 	
 	public BudgetPlanModel() {
+		initialize();
+	}
+	
+	public void refresh(){
 		initialize();
 	}
 	
@@ -71,7 +76,30 @@ public class BudgetPlanModel {
 	     }
 	}
 	
-	public void remove(int n){
+	 public void remove(){
+			clearCsv();
+						
+	        try{
+	            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
+	            	
+	        		for (Posten p : gesamt) {
+	        			String d = dateToString(p.getDatum());
+	        			String b = p.getBezeichnung();
+	        			Double be = p.getBetrag();
+	        			String k = p.getKategorie();
+	        			int pk = p.getperiodkey();
+	    			
+	        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
+	    				
+	        			bw.write(save); //schreiben
+	        		}
+	                bw.flush(); // Puffer von BW leeren
+	                bw.close();//BufferWriter schliessen
+	        }
+	        catch (Exception e){ // noch nichts
+	        }
+			}
+	 public void remove(int n){
 		clearCsv();
 		gesamt.remove(n);
 			
@@ -96,7 +124,39 @@ public class BudgetPlanModel {
         }
 		}
 
+	public boolean save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){
+		boolean status = false; //Check ob gespeichert wurde
+	    String save ="Error";
+	    
+	    if (ein_aus == 1){
+	    	sbetrag = "+"+sbetrag;
+	    } else if ( ein_aus == 2){
+	    	sbetrag = "-"+sbetrag;
+	    }
+	    
+	    try{
+	        BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", true)); 
+	        	
+	       	save = sdatum +"," + sbeschreibung+ ","+ sbetrag+ "," +kateg_name + "," + per +sep;
 	
+	        bw.write(save); //schreiben
+	        bw.flush(); // Puffer von BW leeren
+	        bw.close();//BufferWriter schliessen
+	        status=true;
+	    }
+	    catch (Exception e){ // noch nichts
+	    }
+	    
+	    return status;
+	}
+	
+	public int getKontostand(){ //liefert aktuellen Kontostand zurück
+		int kontostand = 0;
+		for( Posten p : gesamt){
+			kontostand += p.getBetrag();
+		}
+		return kontostand;
+	}
 
 	private String dateToString(Date d){
 		String format = "dd.MM.yyyy";
@@ -105,6 +165,36 @@ public class BudgetPlanModel {
 		String stringDate = sdf.format(date );
 		return stringDate;
 	}
+	
+	public boolean isZahl(String s){
+		try{
+			double eingabe = Double.parseDouble(s);
+			return true;
+		}
+		catch (Exception e){
+			return false;
+		}
+	}
+	
+	public boolean isDate(String s){
+		SimpleDateFormat dformat = new SimpleDateFormat("dd.MM.yyyy");
+		dformat.setLenient(false);
+		
+		try{
+			dformat.parse(s);
+			return true;
+		} catch (Exception e) {
+			//kein Datum
+			return false;
+		}
+	}
+	
+	
+	
+
 }
+	
+	
+	
 
 	

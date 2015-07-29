@@ -1,18 +1,18 @@
 import java.awt.BorderLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-
 import javax.swing.JScrollPane;
-
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,23 +45,15 @@ public class DatenVerwaltung extends Menu {
 	public DatenVerwaltung(BudgetPlanModel budget, JFrame m1) {
 		//super("BudgetPlan");
 		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-		frame.setVisible(true);
+		createClientPanel(frame, "Datenverwaltung");
 		this.m1 = m1;
 		this.budget = budget;
 		initWindow(); // Initialisierung des Frameinhalts
-		addBehavior(); // Verhalten der GUI Elemente dieses Frames
-	}
+	}	
 	
 
 	protected void initWindow() {
 
-
-		JLabel hl = headline("Datenverwaltung");
-		frame.add(hl, BorderLayout.NORTH);
-		
 		// Tabelle mit Uebersicht der Ausgaben
 		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie", "Periodisch anfallend" };
 		dtm = new DefaultTableModel(setupTable(),line);
@@ -123,16 +115,6 @@ public class DatenVerwaltung extends Menu {
 			i++;
 		}
 		return data;
-	}
-	
-	
-	// Verhalten hinzufuegen
-	public void addBehavior() {
-		// registriere den ActionListener fuer den Button als anonyme Klasse
-		
-		
-
-
 	}
 	
 

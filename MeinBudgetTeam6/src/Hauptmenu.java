@@ -24,19 +24,25 @@ public class Hauptmenu extends Menu {
 	
 	//Buttons
 	private JButton btnEingabe;
+	private JButton btnAusgabe;
 	private JButton btnGrafik;
 	private JButton btnDV;
 	private JButton btnProg;
 	private JButton btnSpar;
 	private JButton btnExit;
 
+	
+	
 	public Hauptmenu(){
-		hm.setBounds(100, 100, 800, 600);
-		hm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		hm.setLayout(new BorderLayout());
-		hm.setVisible(true);
+		createClientPanel(hm,"Hauptmenü");
 		pan.setLayout(gb);
 		setupHM();
+	}
+	
+	public void revisible(){
+		hm.setVisible(true);
+		//updateKontostand();
+		
 	}
 	
 	public void setupHM(){
@@ -53,14 +59,24 @@ public class Hauptmenu extends Menu {
 	}
 	
 	public void schalt(){
-		btnEingabe = new JButton("Datensatz hinzufügen");
+		btnEingabe = new JButton("Einnahmen hinzufügen");
 		btnEingabe.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				hm.setVisible(false); //Hauptmenü unsichtbar
-				Eingabe window = new Eingabe(hm);
+				Datenerfassung d_erf = new Datenerfassung(1);
 			}
 		});
 		addComp(pan,  gb,			btnEingabe,			1,			1,	2,	1);
+		
+		btnAusgabe = new JButton("Ausgaben hinzufügen");
+		btnAusgabe.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				hm.setVisible(false); //Hauptmenü unsichtbar
+				Datenerfassung d_erf = new Datenerfassung(2);
+			}
+		});
+		addComp(pan,  gb,			btnAusgabe,			1,			2,	2,	1);
+		
 
 		
 		btnGrafik = new JButton("Darstellung");
@@ -71,7 +87,7 @@ public class Hauptmenu extends Menu {
 				hm.setVisible(false); //Hauptmenü unsichtbar
 			}
 		});
-		addComp(pan,  gb,			btnGrafik,			1,			2,	2,	1);
+		addComp(pan,  gb,			btnGrafik,			1,			3,	2,	1);
 		
 		btnDV = new JButton("Datensatz löschen");
 		btnDV.addActionListener(new ActionListener(){
@@ -81,7 +97,7 @@ public class Hauptmenu extends Menu {
 				hm.setVisible(false); //Hauptmenü unsichtbar
 			}
 		});
-		addComp(pan,  gb,			btnDV,				1,				3,	2,	1);
+		addComp(pan,  gb,			btnDV,				1,				4,	2,	1);
 		
 		//PrognoseFunktion
 		btnProg = new JButton("Prognosefunktion");
@@ -93,7 +109,7 @@ public class Hauptmenu extends Menu {
 				
 			}
 		});
-		addComp(pan,  gb,			btnProg,				1,				4,	2,	1);
+		addComp(pan,  gb,			btnProg,				1,				5,	2,	1);
 		
 		//SparFunktion
 		btnSpar = new JButton("Sparfunktion");
@@ -104,7 +120,7 @@ public class Hauptmenu extends Menu {
 				Sparfunktion window = new Sparfunktion(hm);
 			}
 		});
-		addComp(pan,  gb,			btnSpar,				1,				5,	2,	1);
+		addComp(pan,  gb,			btnSpar,				1,				6,	2,	1);
 
 		JButton btnExit = new JButton("Beenden");
 		btnExit.addActionListener(new ActionListener(){

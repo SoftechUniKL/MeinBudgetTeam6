@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import static java.lang.Math.abs;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -277,7 +280,7 @@ public class BudgetPlanGUI extends JFrame {
 					refreshTables();
 					refreshDiagrams();
 				} else if (e.getSource() == buttonMonth) {
-					sortList(getMonth());
+					sortMonth();
 					refreshTables();
 					refreshDiagrams();
 				} else if (e.getSource() == buttonBalken) {
@@ -304,7 +307,31 @@ public class BudgetPlanGUI extends JFrame {
 		buttonBalken.addActionListener(aListener);
 
 	}
-
+	
+	public void sortMonth(){// simpler Monatsvergleich, Monat wird als Integer aus jedem Datum gezogen und verglichen
+		sortedListIn = new ArrayList<Posten>();
+		sortedListOut = new ArrayList<Posten>();
+		
+		Date current = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(current);
+		
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		
+		for (Posten p : budget.gesamt) {
+			cal.setTime(p.getDatum());
+			int comp_month = cal.get(Calendar.MONTH);
+			int comp_year = cal.get(Calendar.YEAR);
+			if (comp_month == month && comp_year == year) {
+				if (p.getBetrag() >= 0)
+					sortedListIn.add(p);
+				else
+					sortedListOut.add(p);
+			}
+		}
+	}
+	
 	Date getMonth() {
 		// TODO
 		return new Date(115, 4, 1);

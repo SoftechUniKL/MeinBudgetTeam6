@@ -10,15 +10,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 	
-public class Menu {
+public abstract class Menu {
+	protected static Hauptmenu hm_ref;
 
 	GridBagConstraints gbc = new GridBagConstraints();
 
-	public Menu(){
-	}
-	
-	
-	protected JLabel headline(String s){
+	protected static void createClientPanel(final JFrame frame, String s){
+       	frame.setBounds(100, 100, 800, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		frame.setVisible(true);
+		frame.add(headline(s), BorderLayout.NORTH);
+    }
+
+	protected static JLabel headline(String s){
 		JLabel headline = new JLabel(s);
 		headline.setFont(new Font("Arial", Font.BOLD, 45));
 		headline.setHorizontalAlignment(JLabel.LEFT);
