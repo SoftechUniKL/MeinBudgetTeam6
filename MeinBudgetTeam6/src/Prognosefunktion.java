@@ -50,7 +50,7 @@ public class Prognosefunktion extends JFrame {
 			anzahl++;
 		}
 		
-		private void bildeDw(){
+		private void bildeDw(){ //Prognosefunktion muss noch überarbeitet werden
 			if(anzahl == 0){dw=0;} else{
 			dw = betrag / anzahl;
 			}
