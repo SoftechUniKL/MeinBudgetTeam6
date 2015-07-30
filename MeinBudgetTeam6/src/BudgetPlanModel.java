@@ -189,23 +189,55 @@ public class BudgetPlanModel {
 		}
 	}
 	
-	public List<Posten> repeatx (int repeat, Posten p){
+	public void addto(List<Posten> repeat){
+		for(Posten p : repeat){
+			gesamt.add(p);
+		}
+		remove();
+	}
+	
+	public List<Posten> repeatx (int repeat, Posten p, int dauer, int intervall){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(p.getDatum());
 		int month = cal.get(Calendar.MONTH)+1; // Januar = 0
+		int year = cal.get(Calendar.YEAR);
 		
 		List<Posten> periodic = new ArrayList<Posten>();
 		
-		for (int i = month; i<12; i++){
-			cal.add(Calendar.MONTH,1);
+		while (year < dauer){
+		//for (int i = year; i<=dauer; i++){
+			cal.add(Calendar.MONTH,intervall);
 			Date datum = cal.getTime();
 			periodic.add(new Posten(datum, p.getBezeichnung(), p.getBetrag(), p.getKategorie(), 0));
+			System.out.println(year = cal.get(Calendar.YEAR));
 		}
 		return periodic;
 	}
 	
-	
-
+	public Object[][] setupTable(List<Posten> list){
+		Object[][] data = new Object[list.size()][5];
+		int i = 0;
+		for (Posten p : list) {
+			data[i][0] = new SimpleDateFormat("dd/MM/yyyy")
+					.format(p.getDatum());
+			data[i][1] = p.getBezeichnung();
+			data[i][2] = String.format("%.2f", p.getBetrag());
+			data[i][3] = p.getKategorie();
+			data[i][4] = p.getperiodkey();
+			i++;
+		}
+		return data;
+	}
+	public Object[][] setupTable(List<Posten> list, int position){
+		Object[][] data = new Object[1][5];
+		Posten p = gesamt.get(position);
+			data[0][0] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDatum());
+			data[0][1] = p.getBezeichnung();
+			data[0][2] = String.format("%.2f", p.getBetrag());
+			data[0][3] = p.getKategorie();
+			data[0][4] = p.getperiodkey();
+		return data;
+	}
 }
 	
 	
