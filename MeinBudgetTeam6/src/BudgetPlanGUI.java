@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
@@ -19,117 +18,63 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
-/**
- * 
- * Graphische Benutzeroberflaeche des BudgetPlaners
- * 
- * 
- * 
- */
-
 public class BudgetPlanGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 * Tabelle mit Uebersicht der Ausgaben
-	 * 
-	 */
-
-	private DefaultTableModel dtmIn, dtmOut; // Table
-	private DefaultPieDataset pd, pd2; // Piechart
-	private DefaultCategoryDataset dataset, dataset2; // Balken
+	private DefaultTableModel dtmIn, dtmOut;
+	private DefaultPieDataset pieAus, pieEin;
+	private DefaultCategoryDataset barEin, barAus;
 	private Object[] line;
 	private JTable tableIn, tableOut;
-	private JFreeChart balken, balken2, pie, pie2;
-	/**
-	 * 
-	 * Scrollelemente, das die Tabelle umfasst
-	 * 
-	 */
+	private JFreeChart barEinnahme, barAusgabe, pieAusgabe, pieEinnahme;
 
 	private JScrollPane scrollpaneIn, scrollpaneOut;
-	ChartPanel panel, panel2, panel3, panel4;
-
-	/**
-	 * 
-	 * Schaltflaeche, die beim Klicken einen Dialog anzeigt
-	 * 
-	 */
-
+	ChartPanel pAus, pEin, bEin, bAus;
+	
 	private JButton buttonAll, buttonMonth, buttonYear, buttonBalken, buttonClose;
-
-	/**
-	 * 
-	 * Modell der Daten
-	 * 
-	 */
-
+	private JPanel charts;
 	private BudgetPlanModel budget;
 	private List<Posten> sortedListIn, sortedListOut;
-
-	/**
-	 * 
-	 * Konstruktor fuer die GUI.
-	 * 
-	 * 
-	 * 
-	 * Hier wird das Hauptfenster initialisiert und aktiviert.
-	 * 
-	 * 
-	 * 
-	 * @param budget
-	 * 
-	 *            Modell der Daten
-	 * 
-	 */
-
+	
 	public BudgetPlanGUI(BudgetPlanModel budget) {
 		super("BudgetPlan");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new GridLayout(0, 1));
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		this.budget = budget;
-		initWindow(); // Initialisierung des Frameinhalts
-		addBehavior(); // Verhalten der GUI Elemente dieses Frames
-		setBounds(400, 400, 800, 800); // Groesse des Frames
-		setVisible(true); // Frame wird sichtbar
-
+		initWindow();
+		addBehavior();
+		setBounds(400, 400, 800, 800);
+		setVisible(true);
 	}
-
-	// Initialisieren des Fensters
 
 	protected void initWindow() {
 
 		sortList();
-		// Tabelle mit Uebersicht der Ausgaben
 		line = new Object[] { "Datum", "Bezeichnung", "Betrag", "Kategorie" };
 		dtmIn = new DefaultTableModel(setupTable(true), line);
 		dtmOut = new DefaultTableModel(setupTable(false), line);
 		tableIn = new JTable(dtmIn);
 		tableOut = new JTable(dtmOut);
 
-		// inits sortedList with copy of gesamt
-
 		scrollpaneIn = new JScrollPane(tableIn);
 		scrollpaneOut = new JScrollPane(tableOut);
 		JPanel tablePanel = new JPanel(new GridLayout(1, 2));
 		tablePanel.add(scrollpaneIn);
 		tablePanel.add(scrollpaneOut);
-		// Button
-
+		
 		buttonAll = new JButton("Gesamt");
 		buttonMonth = new JButton("Monat");
 		buttonYear = new JButton("Jahr");
 		buttonBalken = new JButton("Als Balkendiagramm");
-		buttonClose = new JButton("Zum Hauptmenu");
+		buttonClose = new JButton("Zum Hauptmen\u00fc");
 
 		JPanel controlPanel = new JPanel();
 		controlPanel.add(new JLabel("Zeitraum"));
 		controlPanel.add(buttonAll);
 		controlPanel.add(buttonYear);
 		controlPanel.add(buttonMonth);
-		controlPanel.add(new JLabel("Weitere Darstellungsmöglichkeiten"));
+		controlPanel.add(new JLabel("Darstellung"));
 		controlPanel.add(buttonBalken);
 		controlPanel.add(buttonClose);
 		buttonClose.addActionListener(new ActionListener(){
@@ -139,47 +84,49 @@ public class BudgetPlanGUI extends JFrame {
 				}
 			});
 		
-
-		// Elemente dem Fenster hinzufuegen:
-
 		getContentPane().add(controlPanel);
 		getContentPane().add(tablePanel);
 
-		// Kreisdiagramm
-
 		setupDatasets();
-		pie = ChartFactory.createPieChart("Ausgaben", pd);
-		panel = new ChartPanel(pie);
-		getContentPane().add(panel);
-		pie2 = ChartFactory.createPieChart("Einnahmen", pd2);
-		panel2 = new ChartPanel(pie2);
-		getContentPane().add(panel2);
 		
-		balken = ChartFactory.createBarChart("Einnahmen", "Kategorie",
-		"Betrag", dataset, PlotOrientation.VERTICAL, true, true, false);
-		panel3 = new ChartPanel(balken);
-		getContentPane().add(panel3);
-		panel3.setVisible(false);
-		balken2 = ChartFactory
-		.createBarChart("Ausgaben", "Kategorie", "Betrag", dataset2,
+		charts = new JPanel();
+		charts.setLayout(new GridLayout(1, -1));
+		getContentPane().add(charts);
+		pieAusgabe = ChartFactory.createPieChart("Ausgaben", pieAus);
+		pAus = new ChartPanel(pieAusgabe);
+		//getContentPane().add(pAus);
+		pieEinnahme = ChartFactory.createPieChart("Einnahmen", pieEin);
+		pEin = new ChartPanel(pieEinnahme);
+		//getContentPane().add(pEin);
+		
+		barEinnahme = ChartFactory.createBarChart("Einnahmen", "Kategorie",
+		"Betrag", barEin, PlotOrientation.VERTICAL, true, true, false);
+		bEin = new ChartPanel(barEinnahme);
+		//getContentPane().add(bEin);
+		bEin.setVisible(false);
+		barAusgabe = ChartFactory
+		.createBarChart("Ausgaben", "Kategorie", "Betrag", barAus,
 		PlotOrientation.VERTICAL, true, true, false);
-		panel4 = new ChartPanel(balken2);
-		getContentPane().add(panel4);
-		panel4.setVisible(false);
+		bAus = new ChartPanel(barAusgabe);
+		//getContentPane().add(bAus);
+		bAus.setVisible(false);
+		
+		charts.add(pAus);
+		charts.add(pEin);
 	}
 
 	public void setupDatasets() {
-		pd = new DefaultPieDataset();
-		pd2 = new DefaultPieDataset();
-		dataset = new DefaultCategoryDataset();
-		dataset2 = new DefaultCategoryDataset();
+		pieAus = new DefaultPieDataset();
+		pieEin = new DefaultPieDataset();
+		barEin = new DefaultCategoryDataset();
+		barAus = new DefaultCategoryDataset();
 		for (Posten p : sortedListOut) {
-			pd.setValue(p.getBezeichnung(), Math.abs(p.getBetrag()));
-			dataset2.addValue(Math.abs(p.getBetrag()), p.getBezeichnung(), "");
+			pieAus.setValue(p.getBezeichnung(), Math.abs(p.getBetrag()));
+			barAus.addValue(Math.abs(p.getBetrag()), p.getBezeichnung(), "");
 		}
 		for (Posten p : sortedListIn) {
-			pd2.setValue(p.getBezeichnung(), Math.abs(p.getBetrag()));
-			dataset.addValue(Math.abs(p.getBetrag()), p.getBezeichnung(), "");
+			pieEin.setValue(p.getBezeichnung(), Math.abs(p.getBetrag()));
+			barEin.addValue(Math.abs(p.getBetrag()), p.getBezeichnung(), "");
 		}
 	}
 
@@ -194,17 +141,17 @@ public class BudgetPlanGUI extends JFrame {
 
 	public void refreshDiagrams() {
 		setupDatasets();
-		pie = ChartFactory.createPieChart("Ausgaben", pd);
-		panel.setChart(pie);
-		pie2 = ChartFactory.createPieChart("Einnahmen", pd2);
-		panel2.setChart(pie2);
-		balken = ChartFactory.createBarChart("Einnahmen", "Kategorie",
-		"Betrag", dataset, PlotOrientation.VERTICAL, true, true, false);
-		panel3.setChart(balken);
-		balken2 = ChartFactory
-		.createBarChart("Ausgaben", "Kategorie", "Betrag", dataset2,
+		pieAusgabe = ChartFactory.createPieChart("Ausgaben", pieAus);
+		pAus.setChart(pieAusgabe);
+		pieEinnahme = ChartFactory.createPieChart("Einnahmen", pieEin);
+		pEin.setChart(pieEinnahme);
+		barEinnahme = ChartFactory.createBarChart("Einnahmen", "Kategorie",
+		"Betrag", barEin, PlotOrientation.VERTICAL, true, true, false);
+		bEin.setChart(barEinnahme);
+		barAusgabe = ChartFactory
+		.createBarChart("Ausgaben", "Kategorie", "Betrag", barAus,
 		PlotOrientation.VERTICAL, true, true, false);
-		panel4.setChart(balken2);
+		bAus.setChart(barAusgabe);
 	}
 
 
@@ -253,30 +200,16 @@ public class BudgetPlanGUI extends JFrame {
 			}
 	}
 
-	// Verhalten hinzufuegen
-
 	public void addBehavior() {
-		// registriere den ActionListener fuer den Button als anonyme Klasse
-		// button.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent e) {
-		// JOptionPane.showMessageDialog(BudgetPlanGUI.this,
-		// "Sie sollten Ihre Finanzplanung ueberdenken!",
-		// "Hinweis", JOptionPane.PLAIN_MESSAGE);
-		// }
-		//
-		// });
 
 		ActionListener aListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getSource() == buttonAll) {
 					sortList();
 					refreshTables();
 					refreshDiagrams();
-					// erst sortList(para), dann aufrufen mit setupTable()
-					// analog für Diagramme
 				} else if (e.getSource() == buttonYear) {
-					sortList(getYear());
+					sortYear();
 					refreshTables();
 					refreshDiagrams();
 				} else if (e.getSource() == buttonMonth) {
@@ -284,19 +217,30 @@ public class BudgetPlanGUI extends JFrame {
 					refreshTables();
 					refreshDiagrams();
 				} else if (e.getSource() == buttonBalken) {
-					if (panel.isVisible()) {
+					if (pAus.isVisible()) {
 						buttonBalken.setText("Als Kreisdiagramm");
-						panel.setVisible(false);
-						panel2.setVisible(false);
-						panel3.setVisible(true);
-						panel4.setVisible(true);
+						pAus.setVisible(false);
+						pEin.setVisible(false);
+						charts.remove(pEin);
+						charts.remove(pAus);
+						bEin.setVisible(true);
+						bAus.setVisible(true);
+						charts.add(bEin);
+						charts.add(bAus);
 					} else {
 						buttonBalken.setText("Als Balkendiagramm");
-						panel.setVisible(true);
-						panel2.setVisible(true);
-						panel3.setVisible(false);
-						panel4.setVisible(false);
+						pAus.setVisible(true);
+						pEin.setVisible(true);
+						bEin.setVisible(false);
+						bAus.setVisible(false);
+						charts.add(pEin);
+						charts.add(pAus);
+						charts.remove(bEin);
+						charts.remove(bAus);
+						
 					}
+					getContentPane().validate();
+					getContentPane().repaint();
 				}
 			}
 		};
@@ -308,7 +252,7 @@ public class BudgetPlanGUI extends JFrame {
 
 	}
 	
-	public void sortMonth(){// simpler Monatsvergleich, Monat wird als Integer aus jedem Datum gezogen und verglichen
+	public void sortMonth(){
 		sortedListIn = new ArrayList<Posten>();
 		sortedListOut = new ArrayList<Posten>();
 		
@@ -332,11 +276,24 @@ public class BudgetPlanGUI extends JFrame {
 		}
 	}
 	
-	Date getMonth() {
-		// TODO
-		return new Date(115, 4, 1);
-	}
-	Date getYear() {
-		return new Date(115, 0, 1);
+	public void sortYear() {
+		sortedListIn = new ArrayList<Posten>();
+		sortedListOut = new ArrayList<Posten>();
+		
+		Date current = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(current);
+		int year = cal.get(Calendar.YEAR);
+		
+		for (Posten p : budget.gesamt) {
+			cal.setTime(p.getDatum());
+			int comp_year = cal.get(Calendar.YEAR);
+			if (comp_year == year) {
+				if (p.getBetrag() >= 0)
+					sortedListIn.add(p);
+				else
+					sortedListOut.add(p);
+			}
+		}		
 	}
 }
