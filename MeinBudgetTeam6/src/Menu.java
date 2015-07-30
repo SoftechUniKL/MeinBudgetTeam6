@@ -30,12 +30,34 @@ public abstract class Menu {
 		return headline;
 	}
 	
+	protected static JLabel notice(String s){
+		JLabel notice = new JLabel(s);
+		notice.setFont(new Font("Arial", Font.ITALIC, 10));
+		return notice;
+	}
+	
+	protected static JLabel nline(String s){
+		JLabel nline = new JLabel(s);
+		nline.setFont(new Font("Arial", Font.BOLD, 16));
+		nline.setHorizontalAlignment(JLabel.RIGHT);
+		return nline;
+	}
+	
 	protected void addComp(JPanel form, GridBagLayout gb, JComponent c,  int x, int y, int width, int height){
 		gbc.gridx=x;
 		gbc.gridy=y;
 		gbc.gridwidth=width;
 		gbc.gridheight=height;
 		gbc.insets=new Insets(0,0,10,0);
+		form.add(c, gbc);
+	}
+	protected void addComp(JPanel form, GridBagLayout gb, JComponent c,  int x, int y, int width, int height, int anchor){
+		gbc.gridx=x;
+		gbc.gridy=y;
+		gbc.gridwidth=width;
+		gbc.gridheight=height;
+		gbc.insets=new Insets(0,0,10,0);
+		gbc.anchor=anchor;
 		form.add(c, gbc);
 	}
 }

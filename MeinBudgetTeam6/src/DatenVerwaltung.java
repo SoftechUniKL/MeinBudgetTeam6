@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -42,11 +43,10 @@ public class DatenVerwaltung extends Menu {
 	private BudgetPlanModel budget;
 
 
-	public DatenVerwaltung(BudgetPlanModel budget, JFrame m1) {
+	public DatenVerwaltung(BudgetPlanModel budget) {
 		//super("BudgetPlan");
 		frame = new JFrame();
 		createClientPanel(frame, "Datenverwaltung");
-		this.m1 = m1;
 		this.budget = budget;
 		initWindow(); // Initialisierung des Frameinhalts
 	}	
@@ -68,6 +68,7 @@ public class DatenVerwaltung extends Menu {
 		btnDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try{
 					int row = table.getSelectedRow();
 					budget.remove(row);
 				
@@ -75,7 +76,10 @@ public class DatenVerwaltung extends Menu {
 					budget.initialize();
 					dtm = new DefaultTableModel(setupTable(),line);
 					table.setModel(dtm);
-	
+				} 
+				catch (ArrayIndexOutOfBoundsException ex){
+					JOptionPane.showMessageDialog(null, "Bitte eine Zeile zum Löschen auswählen");
+				}
 				
 			}
 
@@ -84,7 +88,7 @@ public class DatenVerwaltung extends Menu {
 		btnAbbruch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				m1.setVisible(true);
+				hm_ref.revisible();
 				frame.dispose();
 	
 				

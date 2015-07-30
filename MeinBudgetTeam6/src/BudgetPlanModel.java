@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
+import java.util.Collections;
+
+import javax.swing.JOptionPane;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVParser;
@@ -124,7 +127,7 @@ public class BudgetPlanModel {
         }
 		}
 
-	public boolean save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){
+	public void save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){
 		boolean status = false; //Check ob gespeichert wurde
 	    String save ="Error";
 	    
@@ -146,12 +149,14 @@ public class BudgetPlanModel {
 	    }
 	    catch (Exception e){ // noch nichts
 	    }
+	    if (status == true){
+	    	JOptionPane.showMessageDialog(null, "Erfolgreich gespeichert!");
+	    } else {JOptionPane.showMessageDialog(null, "Fehler, Daten konnten nicht gespeichert werden!");}
 	    
-	    return status;
 	}
 	
-	public int getKontostand(){ //liefert aktuellen Kontostand zurück
-		int kontostand = 0;
+	public double getKontostandM(){ //liefert aktuellen Kontostand zurück
+		double kontostand = 0;
 		for( Posten p : gesamt){
 			kontostand += p.getBetrag();
 		}
@@ -194,6 +199,7 @@ public class BudgetPlanModel {
 			gesamt.add(p);
 		}
 		remove();
+		JOptionPane.showMessageDialog(null, "Gespeichert!");
 	}
 	
 	public List<Posten> repeatx (int repeat, Posten p, int dauer, int intervall){
@@ -237,6 +243,21 @@ public class BudgetPlanModel {
 			data[0][3] = p.getKategorie();
 			data[0][4] = p.getperiodkey();
 		return data;
+	}
+	
+	public List<String> getCategorys(){
+		List<String> strings = new ArrayList<String>();
+			
+			for (Posten p : gesamt){
+				String kat = p.getKategorie();
+				if(strings.contains(kat)==false){
+					strings.add(kat);
+				}
+			
+			}
+			Collections.sort(strings);
+			return strings;
+	
 	}
 }
 	

@@ -91,7 +91,7 @@ public class Hauptmenu extends Menu {
 		btnDV.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				BudgetPlanModel budget = new BudgetPlanModel();
-				DatenVerwaltung ver = new DatenVerwaltung( budget, hm); // Modell
+				DatenVerwaltung ver = new DatenVerwaltung( budget); // Modell
 				hm.setVisible(false); //Hauptmenü unsichtbar
 			}
 		});
