@@ -30,6 +30,13 @@ public abstract class Menu {
 		return headline;
 	}
 	
+	protected static JLabel lb_konto(String s){
+		JLabel konto = new JLabel(s);
+		konto.setFont(new Font("Arial", Font.BOLD, 28));
+		konto.setHorizontalAlignment(JLabel.CENTER);
+		return konto;
+	}
+	
 	protected static JLabel notice(String s){
 		JLabel notice = new JLabel(s);
 		notice.setFont(new Font("Arial", Font.ITALIC, 10));

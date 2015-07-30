@@ -157,8 +157,21 @@ public class BudgetPlanModel {
 	
 	public double getKontostandM(){ //liefert aktuellen Kontostand zurück
 		double kontostand = 0;
-		for( Posten p : gesamt){
-			kontostand += p.getBetrag();
+		
+		Date current = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(current);
+		
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		
+		for (Posten p : gesamt) {
+			cal.setTime(p.getDatum());
+			int comp_month = cal.get(Calendar.MONTH);
+			int comp_year = cal.get(Calendar.YEAR);
+			if (comp_month == month && comp_year == year) {
+				kontostand += p.getBetrag();
+			}
 		}
 		return kontostand;
 	}

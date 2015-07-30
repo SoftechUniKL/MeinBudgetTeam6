@@ -14,13 +14,15 @@ public class Hauptmenu extends Menu {
 	
 	
 
-
+	private JLabel kontostand, lbl_kontostand;
 	private JFrame hm = new JFrame();
 	private JPanel pan = new JPanel();
+	private JPanel center = new JPanel();
 	private JPanel pan2 = new JPanel();
 
 	JScrollPane scroll = new JScrollPane(pan);
 	GridBagLayout gb = new GridBagLayout();
+	BudgetPlanModel budget = new BudgetPlanModel();
 	
 	//Buttons
 	private JButton btnEingabe;
@@ -41,18 +43,29 @@ public class Hauptmenu extends Menu {
 	
 	public void revisible(){
 		hm.setVisible(true);
-		//updateKontostand();
+		updateKontostand();
 		
 	}
 	
+	public void updateKontostand(){
+		budget.refresh();
+		kontostand.setText(Double.toString(budget.getKontostandM()));
+	}
+	
 	public void setupHM(){
-		//Labels
-				
 		//Buttons
-		schalt();
-		hm.add(scroll, BorderLayout.CENTER);
 		
-		//Beenden
+		kontostand = lb_konto(Double.toString(budget.getKontostandM())+"€");
+		lbl_kontostand = nline("Kontostand diesen Monat:");
+		center.setLayout(new BorderLayout());
+		JPanel pan3 = new JPanel();
+		pan3.add(lbl_kontostand);
+		pan3.add(kontostand);
+		center.add(pan3, BorderLayout.NORTH);
+		center.add(scroll, BorderLayout.CENTER);
+					
+		schalt();
+		hm.add(center, BorderLayout.CENTER);
 		hm.validate();
 	}
 	
