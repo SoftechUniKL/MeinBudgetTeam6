@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 
 
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -66,10 +68,10 @@ import java.util.Date;
 
 			//Datum
 			JLabel lbl_Zdatum = new JLabel("Bitte das Datum eingeben (dd.MM.yyyy)");
-			JTextField lbl_Zieldatum = new JTextField();
-			lbl_Zieldatum.setColumns(10);
+			JTextField Zieldatum = new JTextField();
+			Zieldatum.setColumns(10);
 			addComp(form,  gb,			lbl_Zdatum,				0,			1,	1,	1);
-			addComp(form,  gb,			lbl_Zieldatum,					1,			1,	2,	1);
+			addComp(form,  gb,			Zieldatum,					1,			1,	2,	1);
 				
 			//Betrag
 			JLabel lbl_tBetrag = new JLabel("Betrag");
@@ -91,33 +93,43 @@ import java.util.Date;
 					try {
 						Date ZielDate = new Date();
 						
-						String a = "01.";
+						//String a = "01.";
 						
 						SimpleDateFormat formatter = new SimpleDateFormat ("dd.MM.yyyy");		
-						ZielDate = formatter.parse(a.concat(lbl_Zieldatum.getText()));
-
+						//ZielDate = formatter.parse(a.concat(Zieldatum.getText()));
+						ZielDate = formatter.parse(Zieldatum.getText());
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(ZielDate);
+						
+						Calendar cal_cur = Calendar.getInstance();
+						cal_cur.setTime(Startdatum);
+						
 						//if (isDate(tdate.getText()) == true){
 						int aktuellerMonat = 0;
 						int aktuellesJahr = 0;
 						float MonatsBetrag = 0;
 						
-						int StartTag = Startdatum.getDate();
+						//int StartTag = Startdatum.getDate();
+						int StartTag = cal_cur.get(Calendar.DAY_OF_MONTH);
 						
 						String Betrag = "";
 
 						//Berechnung des Start Monats und Jahres
 						if (StartTag == 1){
-							aktuellerMonat = Startdatum.getMonth()+1;
+							//aktuellerMonat = Startdatum.getMonth()+1;
+							aktuellerMonat = cal_cur.get(Calendar.MONTH)+1;
 						}
 						else {
-							aktuellerMonat = Startdatum.getMonth()+2;
+							//aktuellerMonat = Startdatum.getMonth()+2;
+							aktuellerMonat = cal_cur.get(Calendar.MONTH)+2;
 						}
-						aktuellesJahr = Startdatum.getYear()+1900;
+						//aktuellesJahr = Startdatum.getYear()+1900;
+						aktuellesJahr = cal_cur.get(Calendar.YEAR);
 						
 						Betrag = tBetrag.getText();
 						
 						int anzahlmonate = 0;
-						
+						/*
 						if (ZielDate.getYear()-Startdatum.getYear()<=1){
 							anzahlmonate= 12-(Startdatum.getMonth()+1) + ZielDate.getMonth()+1;
 						}
@@ -125,7 +137,17 @@ import java.util.Date;
 							anzahlmonate= 12-(Startdatum.getMonth()+1) + ZielDate.getMonth()+1;
 							anzahlmonate = anzahlmonate + (ZielDate.getYear()-Startdatum.getYear()-1)*12;
 						}
-						
+						*/
+						if(cal.get(Calendar.YEAR)-cal_cur.get(Calendar.YEAR)==0){ 
+							anzahlmonate = 12-(cal_cur.get(Calendar.MONTH)+1); //wenn die Jahresdifferenz 0 ist, sollen natürlich die Monate des Zieldatums nicht dazuaddiert werden 
+						}else{	
+							if (cal.get(Calendar.YEAR)-cal_cur.get(Calendar.YEAR)<=1){
+								anzahlmonate= (12-(cal_cur.get(Calendar.MONTH)+1)) + cal.get(Calendar.MONTH)+1;
+							}else {
+								anzahlmonate= 12-(cal_cur.get(Calendar.MONTH)+1) + cal.get(Calendar.MONTH)+1;
+								anzahlmonate = anzahlmonate + (cal.get(Calendar.YEAR)-cal_cur.get(Calendar.YEAR)-1)*12;
+							}
+						}
 						MonatsBetrag = Float.parseFloat(Betrag) / (anzahlmonate);
 						
 						JOptionPane.showMessageDialog(null, anzahlmonate);
