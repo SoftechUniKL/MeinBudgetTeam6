@@ -55,7 +55,7 @@ public class DatenVerwaltung extends Menu {
 	protected void initWindow() {
 
 		// Tabelle mit Uebersicht der Ausgaben
-		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie", "Periodisch anfallend" };
+		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie", "ID" };
 		dtm = new DefaultTableModel(setupTable(),line);
 		table = new JTable(dtm);
 		
@@ -69,8 +69,10 @@ public class DatenVerwaltung extends Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
-					int row = table.getSelectedRow();
-					budget.remove(row);
+					int line_TR = table.getSelectedRow();
+					//int row = 4;
+					//long id_tR = (long) table.getValueAt(line,row);
+					budget.remove(line_TR);
 				
 				
 					budget.initialize();
@@ -115,7 +117,7 @@ public class DatenVerwaltung extends Menu {
 			data[i][1] = p.getBezeichnung();
 			data[i][2] = String.format("%.2f", p.getBetrag());
 			data[i][3] = p.getKategorie();
-			data[i][4] = p.getperiodkey();
+			data[i][4] = p.getID();
 			i++;
 		}
 		return data;

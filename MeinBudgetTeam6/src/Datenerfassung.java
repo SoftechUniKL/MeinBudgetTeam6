@@ -25,13 +25,9 @@ import javax.swing.JTextField;
 public class Datenerfassung extends Menu {
 	//Variablen
 	private int ein_aus = 0; // Eingabe = 1; Ausgabe = 2;
-	private int perkey; 
-	
 	private String hl;
-	private static final String sep = System.lineSeparator(); // /r/n
 
 	//GUI Elemente
-
 	private JFrame frame;
 	private JPanel buttons, form;
 	private JRadioButton rdbtnEinnahme, rdbtnAusgabe, rdbtnPer;
@@ -39,12 +35,14 @@ public class Datenerfassung extends Menu {
 	private JComboBox kategorie, per;
 	private JScrollPane scrollpane;
 	private JTable table;
+	
+	//BudgetPlanModel
 	private BudgetPlanModel bpm = new BudgetPlanModel();
 	
 	//Konstruktor - default
 	public Datenerfassung() {
 	}
-	
+	//Konstruktor
 	public Datenerfassung(int mode) {
 		ein_aus = mode;
 		
@@ -150,7 +148,7 @@ public class Datenerfassung extends Menu {
 				bpm.refresh(); //Posten werden neu eingelesen
 				if (rdbtnPer.isSelected() == true) {
 					int position = bpm.gesamt.size()-1; 
-					windows  window = new windows("Best‰tigen", bpm, position);
+					wk_Zahlungen  window = new wk_Zahlungen("Best‰tigen", bpm, position);
 					frame.dispose(); // frame schlieﬂen
 				}else {backHM();}
 			
@@ -163,27 +161,6 @@ public class Datenerfassung extends Menu {
 
 
 	//ab hier Hilfsmethoden
-	private void per_checker(String tocheck){
-		switch (tocheck){
-		case "t‰glich": //Werte erstmal frei gew‰hlt
-			perkey = 1; 
-			break;
-		case "monatlich":
-			perkey = 30;
-			break;
-		case "halbj‰hrlich":
-			perkey = 180;
-			break;
-		case "j‰hrlich":
-			perkey = 365;
-			break;
-		default:
-			perkey = 0;
-		}
-		 
-		
-	}
-	
 	private void backHM() {
 		hm_ref.revisible();
 		frame.dispose();

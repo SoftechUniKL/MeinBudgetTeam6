@@ -26,6 +26,7 @@ import com.opencsv.CSVParser;
  */
 public class BudgetPlanModel {
 	List<Posten> gesamt;
+	private long biggestID = 0;
 	
 	private static final String sep = System.lineSeparator();
 	
@@ -49,10 +50,14 @@ public class BudgetPlanModel {
 				String bezeichnung = nextLine[1];
 				double betrag = Double.parseDouble(nextLine[2]);
 				String kategorie = nextLine[3];
-				int periodkey = Integer.parseInt(nextLine[4]);
-				gesamt.add(new Posten(datum, bezeichnung, betrag, kategorie, periodkey));
+				long ID = Long.parseLong(nextLine[4]);
+				if (ID > biggestID){
+					biggestID = ID;
+				}
+				gesamt.add(new Posten(datum, bezeichnung, betrag, kategorie, ID));
 			}
 			reader.close();
+			ID.setBId(biggestID);
 
 		} catch (FileNotFoundException e) {
 			System.err
@@ -97,7 +102,7 @@ public class BudgetPlanModel {
 	        			String b = p.getBezeichnung();
 	        			Double be = p.getBetrag();
 	        			String k = p.getKategorie();
-	        			int pk = p.getperiodkey();
+	        			long pk = p.getID();
 	    			
 	        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
 	    				
@@ -121,7 +126,7 @@ public class BudgetPlanModel {
         			String b = p.getBezeichnung();
         			Double be = p.getBetrag();
         			String k = p.getKategorie();
-        			int pk = p.getperiodkey();
+        			long pk = p.getID();
     			
         			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
     				
@@ -148,7 +153,7 @@ public class BudgetPlanModel {
 		    try{
 		        BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", true)); 
 		        	
-		       	save = sdatum +"," + sbeschreibung+ ","+ sbetrag+ "," +kateg_name + "," + per +sep;
+		       	save = sdatum +"," + sbeschreibung+ ","+ sbetrag+ "," +kateg_name + "," + ID.nextId() +sep;
 		
 		        bw.write(save); //schreiben
 		        bw.flush(); // Puffer von BW leeren
@@ -242,7 +247,7 @@ public class BudgetPlanModel {
 		//for (int i = year; i<=dauer; i++){
 			cal.add(Calendar.MONTH,intervall);
 			Date datum = cal.getTime();
-			periodic.add(new Posten(datum, p.getBezeichnung(), p.getBetrag(), p.getKategorie(), 0));
+			periodic.add(new Posten(datum, p.getBezeichnung(), p.getBetrag(), p.getKategorie(), ID.nextId()));
 			System.out.println(year = cal.get(Calendar.YEAR));
 		}
 		return periodic;
@@ -257,7 +262,7 @@ public class BudgetPlanModel {
 			data[i][1] = p.getBezeichnung();
 			data[i][2] = String.format("%.2f", p.getBetrag());
 			data[i][3] = p.getKategorie();
-			data[i][4] = p.getperiodkey();
+			data[i][4] = p.getID();
 			i++;
 		}
 		return data;
@@ -269,7 +274,7 @@ public class BudgetPlanModel {
 			data[0][1] = p.getBezeichnung();
 			data[0][2] = String.format("%.2f", p.getBetrag());
 			data[0][3] = p.getKategorie();
-			data[0][4] = p.getperiodkey();
+			data[0][4] = p.getID();
 		return data;
 	}
 	
