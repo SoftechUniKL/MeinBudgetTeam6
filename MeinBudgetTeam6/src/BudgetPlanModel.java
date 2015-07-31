@@ -113,35 +113,14 @@ public class BudgetPlanModel {
 	        }
 	        catch (Exception e){ // noch nichts
 	        }
-			}
-	 public void remove(int n){
+	}
+	
+	 public void remove(int n){ //remove über Position
 		gesamt.remove(n);
 		remove();
-		/*
-        try{
-            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
-            	
-        		for (Posten p : gesamt) {
-        			String d = dateToString(p.getDatum());
-        			String b = p.getBezeichnung();
-        			Double be = p.getBetrag();
-        			String k = p.getKategorie();
-        			long pk = p.getID();
-    			
-        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
-    				
-        			bw.write(save); //schreiben
-        		}
-                bw.flush(); // Puffer von BW leeren
-                bw.close();//BufferWriter schliessen
-        }
-        catch (Exception e){ // noch nichts
-        }*/
-		}
+	}
 
-	 public void remove(long n){
-			//clearCsv();
-			
+	 public void remove(long n){ //remove über ID
 			for(int i=0; i<gesamt.size(); ++i){  
 				   if(gesamt.get(i).getID()== n){
 				      gesamt.remove(i);
@@ -149,26 +128,6 @@ public class BudgetPlanModel {
 				   }
 			}
 			remove();
-			
-	       /* try{
-	            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
-	            	
-	        		for (Posten p : gesamt) {
-	        			String d = dateToString(p.getDatum());
-	        			String b = p.getBezeichnung();
-	        			Double be = p.getBetrag();
-	        			String k = p.getKategorie();
-	        			long pk = p.getID();
-	    			
-	        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
-	    				
-	        			bw.write(save); //schreiben
-	        		}
-	                bw.flush(); // Puffer von BW leeren
-	                bw.close();//BufferWriter schliessen
-	        }
-	        catch (Exception e){ // noch nichts
-	        }*/
 	}
 
 	 
@@ -277,11 +236,11 @@ public class BudgetPlanModel {
 		List<Posten> periodic = new ArrayList<Posten>();
 		
 		while (year < dauer){
-		//for (int i = year; i<=dauer; i++){
+		
 			cal.add(Calendar.MONTH,intervall);
 			Date datum = cal.getTime();
 			periodic.add(new Posten(datum, p.getBezeichnung(), p.getBetrag(), p.getKategorie(), ID.nextId()));
-			System.out.println(year = cal.get(Calendar.YEAR));
+			//System.out.println(year = cal.get(Calendar.YEAR));
 		}
 		return periodic;
 	}
