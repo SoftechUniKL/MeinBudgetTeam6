@@ -26,7 +26,7 @@ import com.opencsv.CSVParser;
  */
 public class BudgetPlanModel {
 	List<Posten> gesamt;
-	private long biggestID = 0;
+	private long biggestID = 0; //speichert die größte bereits vorhandene ID
 	
 	private static final String sep = System.lineSeparator();
 	
@@ -91,7 +91,7 @@ public class BudgetPlanModel {
 	     }
 	}
 	
-	 public void remove(){
+	 public void remove(){ //schreibt die CSV neu aus der ArrayList
 			clearCsv();
 						
 	        try{
@@ -115,9 +115,9 @@ public class BudgetPlanModel {
 	        }
 			}
 	 public void remove(int n){
-		clearCsv();
 		gesamt.remove(n);
-			
+		remove();
+		/*
         try{
             BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
             	
@@ -136,20 +136,21 @@ public class BudgetPlanModel {
                 bw.close();//BufferWriter schliessen
         }
         catch (Exception e){ // noch nichts
-        }
+        }*/
 		}
 
 	 public void remove(long n){
-			clearCsv();
+			//clearCsv();
 			
-			for(int i=0;i<gesamt.size();++i){
+			for(int i=0; i<gesamt.size(); ++i){  
 				   if(gesamt.get(i).getID()== n){
 				      gesamt.remove(i);
-				      --i; // EDIT
+				      --i; // da nach dem löschen, ein Element nachrückt, doppelt überprüfen
 				   }
 			}
-				
-	        try{
+			remove();
+			
+	       /* try{
 	            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
 	            	
 	        		for (Posten p : gesamt) {
@@ -167,11 +168,11 @@ public class BudgetPlanModel {
 	                bw.close();//BufferWriter schliessen
 	        }
 	        catch (Exception e){ // noch nichts
-	        }
+	        }*/
 	}
 
 	 
-	public void save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){
+	public void save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){ //speichert in CSV
 		boolean status = false; //Check ob gespeichert wurde
 	    String save ="Error";
 	    
@@ -207,7 +208,7 @@ public class BudgetPlanModel {
 		
 	}
 	
-	public double getKontostandM(){ //liefert aktuellen Kontostand zurück
+	public double getKontostandM(){ //liefert aktuellen Kontostand(Monat) zurück
 		double kontostand = 0;
 		
 		Date current = new Date();
@@ -228,7 +229,7 @@ public class BudgetPlanModel {
 		return kontostand;
 	}
 
-	private String dateToString(Date d){
+	private String dateToString(Date d){ 
 		String format = "dd.MM.yyyy";
 		Date date = d;
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -259,7 +260,7 @@ public class BudgetPlanModel {
 		}
 	}
 	
-	public void addto(List<Posten> repeat){
+	public void addto(List<Posten> repeat){ //fügt zwei ArrayLists zusammen
 		for(Posten p : repeat){
 			gesamt.add(p);
 		}
@@ -267,7 +268,7 @@ public class BudgetPlanModel {
 		JOptionPane.showMessageDialog(null, "Gespeichert!");
 	}
 	
-	public List<Posten> repeatx (int repeat, Posten p, int dauer, int intervall){
+	public List<Posten> repeatx (int repeat, Posten p, int dauer, int intervall){ //Posten werden dupliziert (mit neuem Datum)
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(p.getDatum());
 		int month = cal.get(Calendar.MONTH)+1; // Januar = 0
@@ -285,7 +286,7 @@ public class BudgetPlanModel {
 		return periodic;
 	}
 	
-	public Object[][] setupTable(List<Posten> list){
+	public Object[][] setupTable(List<Posten> list){ //[][] einlesen aus ArrayList Posten
 		Object[][] data = new Object[list.size()][5];
 		int i = 0;
 		for (Posten p : list) {
@@ -299,7 +300,7 @@ public class BudgetPlanModel {
 		}
 		return data;
 	}
-	public Object[][] setupTable(List<Posten> list, int position){
+	public Object[][] setupTable(List<Posten> list, int position){ //einzelnen Posten aus ArrayList für Tabelle einlesen
 		Object[][] data = new Object[1][5];
 		Posten p = gesamt.get(position);
 			data[0][0] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDatum());
@@ -310,7 +311,7 @@ public class BudgetPlanModel {
 		return data;
 	}
 	
-	public List<String> getCategorys(){
+	public List<String> getCategorys(){ //Kategorien auslesen, in Liste speichern, sortieren
 		List<String> strings = new ArrayList<String>();
 			
 			for (Posten p : gesamt){

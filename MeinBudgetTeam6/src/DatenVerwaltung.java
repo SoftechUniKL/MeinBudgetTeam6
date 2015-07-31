@@ -57,7 +57,7 @@ public class DatenVerwaltung extends Menu {
 
 		// Tabelle mit Uebersicht der Ausgaben
 		line = new Object[] { "Datum", "Bezeichnung","Betrag", "Kategorie", "ID" };
-		dtm = new DefaultTableModel(setupTable(),line);
+		dtm = new DefaultTableModel(budget.setupTable(budget.gesamt),line);
 		table = new JTable(dtm);
 		
 		scrollpane = new JScrollPane(table);
@@ -69,7 +69,7 @@ public class DatenVerwaltung extends Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Collections.sort(budget.gesamt, new SortDate());
-				dtm = new DefaultTableModel(setupTable(),line);
+				dtm = new DefaultTableModel(budget.setupTable(budget.gesamt),line);
 				table.setModel(dtm);	
 			}
 
@@ -79,7 +79,7 @@ public class DatenVerwaltung extends Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Collections.sort(budget.gesamt, new SortID());
-				dtm = new DefaultTableModel(setupTable(),line);
+				dtm = new DefaultTableModel(budget.setupTable(budget.gesamt),line);
 				table.setModel(dtm);	
 			}
 
@@ -97,7 +97,7 @@ public class DatenVerwaltung extends Menu {
 				
 				
 					budget.initialize();
-					dtm = new DefaultTableModel(setupTable(),line);
+					dtm = new DefaultTableModel(budget.setupTable(budget.gesamt),line);
 					table.setModel(dtm);
 				} 
 				catch (ArrayIndexOutOfBoundsException ex){
@@ -130,21 +130,4 @@ public class DatenVerwaltung extends Menu {
 		frame.validate();
 	}
 	
-	
-	public Object[][] setupTable(){
-		Object[][] data = new Object[budget.gesamt.size()][5];
-		int i = 0;
-		for (Posten p : budget.gesamt) {
-			data[i][0] = new SimpleDateFormat("dd/MM/yyyy")
-					.format(p.getDatum());
-			data[i][1] = p.getBezeichnung();
-			data[i][2] = String.format("%.2f", p.getBetrag());
-			data[i][3] = p.getKategorie();
-			data[i][4] = p.getID();
-			i++;
-		}
-		return data;
-	}
-	
-
 }
