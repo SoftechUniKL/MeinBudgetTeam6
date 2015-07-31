@@ -1,10 +1,15 @@
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Font;
 
 import javax.swing.JComponent;
+
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

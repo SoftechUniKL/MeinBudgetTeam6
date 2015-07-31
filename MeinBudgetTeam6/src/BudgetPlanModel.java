@@ -66,6 +66,13 @@ public class BudgetPlanModel {
 			System.err
 					.println("Formatfehler: Die Datei konnte nicht eingelesen werden!");
 			System.exit(1);
+		} catch (NumberFormatException e) {
+			int selected = JOptionPane.showConfirmDialog(null,
+                    "Soll versucht werden den Fehler zu beheben, indem die letzten hinzugefügten Einträge gelöscht werden? Vorsicht Datenverlust!",
+                    "NumberFormatException beim Öffnen der Datei",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+			if (selected == 0) {remove();} else {System.exit(1);}
 		}
 	}
 	
@@ -137,22 +144,30 @@ public class BudgetPlanModel {
 	    	sbetrag = "-"+sbetrag;
 	    }
 	    
-	    try{
-	        BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", true)); 
-	        	
-	       	save = sdatum +"," + sbeschreibung+ ","+ sbetrag+ "," +kateg_name + "," + per +sep;
-	
-	        bw.write(save); //schreiben
-	        bw.flush(); // Puffer von BW leeren
-	        bw.close();//BufferWriter schliessen
-	        status=true;
-	    }
-	    catch (Exception e){ // noch nichts
-	    }
-	    if (status == true){
-	    	JOptionPane.showMessageDialog(null, "Erfolgreich gespeichert!");
-	    } else {JOptionPane.showMessageDialog(null, "Fehler, Daten konnten nicht gespeichert werden!");}
-	    
+
+		    try{
+		        BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", true)); 
+		        	
+		       	save = sdatum +"," + sbeschreibung+ ","+ sbetrag+ "," +kateg_name + "," + per +sep;
+		
+		        bw.write(save); //schreiben
+		        bw.flush(); // Puffer von BW leeren
+		        bw.close();//BufferWriter schliessen
+		        status=true;
+		    }
+		    catch (Exception e){ 
+		    	System.out.println(e.getMessage());
+		    	if (status == true){
+		    		//int position = gesamt.size()+1;
+		    		remove();
+		    	}
+		    	JOptionPane.showMessageDialog(null, "Fehler, Daten konnten nicht gespeichert werden!");
+		    }
+		    if (status == true){
+		    	JOptionPane.showMessageDialog(null, "Erfolgreich gespeichert!");
+		    } 
+	    	
+		
 	}
 	
 	public double getKontostandM(){ //liefert aktuellen Kontostand zurück

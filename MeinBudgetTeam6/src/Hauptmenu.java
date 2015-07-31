@@ -56,7 +56,7 @@ public class Hauptmenu extends Menu {
 		//Buttons
 		
 		kontostand = lb_konto(Double.toString(budget.getKontostandM())+"€");
-		lbl_kontostand = nline("Kontostand diesen Monat:");
+		lbl_kontostand = nline("Kontostand aktueller Monat:");
 		center.setLayout(new BorderLayout());
 		JPanel pan3 = new JPanel();
 		pan3.add(lbl_kontostand);

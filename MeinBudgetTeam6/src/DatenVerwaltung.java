@@ -101,8 +101,7 @@ public class DatenVerwaltung extends Menu {
 		panel.add(btnDelete);
 		panel.add(btnAbbruch);
 		frame.add(panel, BorderLayout.SOUTH);
-
-
+		
 		frame.validate();
 	}
 	
