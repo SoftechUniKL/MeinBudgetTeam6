@@ -75,4 +75,5 @@ public class Posten {
 	public void setKategorie(String Kategorie){
 		this.kategorie = Kategorie;
 	}
+	
 }

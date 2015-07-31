@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -63,15 +64,35 @@ public class DatenVerwaltung extends Menu {
 		
 		
 		// Button
+		JButton btnSortDat = new JButton ("Nach Datum sortieren");
+		btnSortDat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Collections.sort(budget.gesamt, new SortDate());
+				dtm = new DefaultTableModel(setupTable(),line);
+				table.setModel(dtm);	
+			}
+
+		});
+		JButton btnSortID = new JButton ("Nach ID sortieren");
+		btnSortID.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Collections.sort(budget.gesamt, new SortID());
+				dtm = new DefaultTableModel(setupTable(),line);
+				table.setModel(dtm);	
+			}
+
+		});
+		
 		JButton btnDelete = new JButton("Löschen!");
-		JButton btnAbbruch = new JButton ("Zurück ins Hauptmenü!");
 		btnDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					int line_TR = table.getSelectedRow();
-					//int row = 4;
-					//long id_tR = (long) table.getValueAt(line,row);
+					int row = 4;
+					long id_tR = (long) table.getValueAt(line_TR,row);
 					budget.remove(line_TR);
 				
 				
@@ -86,7 +107,7 @@ public class DatenVerwaltung extends Menu {
 			}
 
 		});
-		
+		JButton btnAbbruch = new JButton ("Zurück ins Hauptmenü!");
 		btnAbbruch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -100,6 +121,8 @@ public class DatenVerwaltung extends Menu {
 		// Elemente dem Fenster hinzufuegen:
 		frame.add(scrollpane, BorderLayout.CENTER);
 		panel = new JPanel();
+		panel.add(btnSortDat);
+		panel.add(btnSortID);
 		panel.add(btnDelete);
 		panel.add(btnAbbruch);
 		frame.add(panel, BorderLayout.SOUTH);

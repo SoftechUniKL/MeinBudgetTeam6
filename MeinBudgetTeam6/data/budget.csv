@@ -1,7 +1,5 @@
-01.01.2002,Gehalt,2000.0,Einkünfte,1
 01.01.2002,Miete,200.0,Einkünfte,2
 01.01.2002,KFZ-Steuer,-383.0,KFZ,3
-01.01.2002,Versicherungen,-500.0,Wohngebaeude,4
 01.01.2002,Einkauf bei xyz,-100.0,Lebensmittel,5
 20.12.2014,Weihnachten,2000.0,Geschenke,6
 01.01.2015,Gehalt,2231.45,Gehalt,7
@@ -15,10 +13,9 @@
 01.09.2015,Gehalt,2231.45,Gehalt,15
 01.10.2015,Gehalt,2231.45,Gehalt,16
 01.11.2015,Gehalt,2231.45,Gehalt,17
-01.12.2015,Gehalt,2231.45,Gehalt,19
 01.01.2015,KFZ-Versicherung,-352.6,Versicherungen,19
+01.12.2015,Gehalt,2231.45,Gehalt,19
 01.07.2015,KFZ-Versicherung,-352.6,Versicherungen,20
-30.06.2015,Case,-25.5,-,21
 01.07.2015,Miete,-500.0,Gebäude,22
 01.08.2015,Miete,-500.0,Gebäude,23
 01.09.2015,Miete,-500.0,Gebäude,24
@@ -38,13 +35,11 @@
 01.04.2016,Internet,-40.0,Haushalt,38
 01.05.2016,Internet,-40.0,Haushalt,39
 01.06.2016,Internet,-40.0,Haushalt,40
-01.07.2016,Internet,-40.0,Haushalt,41
 01.08.2016,Internet,-40.0,Haushalt,42
 01.09.2016,Internet,-40.0,Haushalt,43
 01.10.2016,Internet,-40.0,Haushalt,44
 01.11.2016,Internet,-40.0,Haushalt,45
 01.12.2016,Internet,-40.0,Haushalt,46
-01.07.2015,Mobiltelefon,-20.0,-,47
 01.08.2015,Mobiltelefon,-20.0,-,48
 01.09.2015,Mobiltelefon,-20.0,-,49
 01.10.2015,Mobiltelefon,-20.0,-,50
@@ -58,7 +53,6 @@
 01.06.2016,Mobiltelefon,-20.0,-,58
 01.07.2016,Mobiltelefon,-20.0,-,59
 01.08.2016,Mobiltelefon,-20.0,-,60
-01.09.2016,Mobiltelefon,-20.0,-,61
 01.10.2016,Mobiltelefon,-20.0,-,62
 01.11.2016,Mobiltelefon,-20.0,-,63
 01.12.2016,Mobiltelefon,-20.0,-,64
@@ -69,4 +63,3 @@
 30.10.2015,Strom Abschlag,-50.0,Haushalt,69
 30.11.2015,Strom Abschlag,-50.0,Haushalt,70
 30.12.2015,Strom Abschlag,-50.0,Haushalt,71
-31.07.2015,test,222.0,-,72

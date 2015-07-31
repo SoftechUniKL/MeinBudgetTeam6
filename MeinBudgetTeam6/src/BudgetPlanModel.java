@@ -139,6 +139,38 @@ public class BudgetPlanModel {
         }
 		}
 
+	 public void remove(long n){
+			clearCsv();
+			
+			for(int i=0;i<gesamt.size();++i){
+				   if(gesamt.get(i).getID()== n){
+				      gesamt.remove(i);
+				      --i; // EDIT
+				   }
+			}
+				
+	        try{
+	            BufferedWriter bw = new BufferedWriter(new FileWriter("data/budget.csv", false)); 
+	            	
+	        		for (Posten p : gesamt) {
+	        			String d = dateToString(p.getDatum());
+	        			String b = p.getBezeichnung();
+	        			Double be = p.getBetrag();
+	        			String k = p.getKategorie();
+	        			long pk = p.getID();
+	    			
+	        			String save = d +"," + b+ ","+ be+ "," +k +","+ pk + sep;
+	    				
+	        			bw.write(save); //schreiben
+	        		}
+	                bw.flush(); // Puffer von BW leeren
+	                bw.close();//BufferWriter schliessen
+	        }
+	        catch (Exception e){ // noch nichts
+	        }
+	}
+
+	 
 	public void save(String sdatum, String sbeschreibung, String sbetrag, String kateg_name, int per, int ein_aus){
 		boolean status = false; //Check ob gespeichert wurde
 	    String save ="Error";
